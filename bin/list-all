@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+curl -Lqs https://download.mono-project.com/archive/ |
+  grep -Eo 'href="\d[^"]+"' |
+  cut -d\" -f2 |
+  cut -d\/ -f1 |
+  sort --version-sort --unique |
+  xargs
