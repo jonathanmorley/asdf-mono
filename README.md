@@ -1,12 +1,12 @@
-# asdf-pnpm
+# asdf-mono
 
-[![Build Status](https://github.com/jonathanmorley/asdf-pnpm/workflows/ASDF%20CI/badge.svg)](https://github.com/jonathanmorley/asdf-pnpm/actions)
+[![Build Status](https://github.com/jonathanmorley/asdf-mono/workflows/ASDF%20CI/badge.svg)](https://github.com/jonathanmorley/mono-pnpm/actions)
 
-[pnpm][2] plugin for the [asdf][1] version manager.
+[mono][2] plugin for the [asdf][1] version manager.
 
 ## Requirements
 
-This plugin should work on Linux and Mac operating systems.
+This plugin should work on Mac operating systems.
 
 ### Utilities
 
@@ -18,14 +18,16 @@ The following utilities are required:
 - `cut`
 - `sort`
 - `xargs`
-- `tar`
+- `pkgutil`
 - `mv`
+- `mktemp`
+- `rm`
 
 ## Installing
 
 ```
-asdf plugin-add pnpm git@github.com:jonathanmorley/asdf-pnpm.git
+asdf plugin-add mono git@github.com:jonathanmorley/asdf-mono.git
 ```
 
 [1]: https://asdf-vm.com/
-[2]: https://pnpm.js.org/
+[2]: https://www.mono-project.com/
