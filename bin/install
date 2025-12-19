@@ -1,20 +1,13 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 
 set -Eeuo pipefail
 
-if [[ "${ASDF_INSTALL_TYPE:-version}" == 'ref' ]]; then
-  echo >&2 "⛔ This plugin does not support installing by ref."
-  exit 1
+if [[ -z ${ASDF_DOWNLOAD_PATH:-} ]]; then
+  # No download path specified, create a temp one
+  ASDF_DOWNLOAD_PATH="$(mktemp -d)"
+  export ASDF_DOWNLOAD_PATH
+  bash "$(dirname "$0")/download"
 fi
 
-ASDF_MONO_DIR="$(mktemp -d -t asdf-mono-XXXXXXX)"
-
-(
-  cd "${ASDF_MONO_DIR}"
-  
-  curl -Lqs "https://download.mono-project.com/archive/${ASDF_INSTALL_VERSION}/macos-10-universal/MonoFramework-MDK-${ASDF_INSTALL_VERSION}.macos10.xamarin.universal.pkg" -omono.pkg
-  pkgutil --expand-full mono.pkg mono
-  mv mono/mono.pkg/Payload/Library/Frameworks/Mono.framework/Versions/${ASDF_INSTALL_VERSION}/* "${ASDF_INSTALL_PATH}"
-)
-
-rm -rf "${ASDF_MONO_DIR}"
+cp -r "${ASDF_DOWNLOAD_PATH}/mono/mono.pkg/Library/Frameworks/Mono.framework/Versions/${ASDF_INSTALL_VERSION}/"* "${ASDF_INSTALL_PATH}/"
