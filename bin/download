@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+if [[ ${ASDF_INSTALL_TYPE:-version} == 'ref' ]]; then
+  echo >&2 "⛔ This plugin does not support installing by ref."
+  exit 1
+fi
+
+if [[ $(uname -s) != "Darwin" ]]; then
+  echo >&2 "⛔ This plugin only supports macOS (Darwin)."
+  exit 1
+fi
+
+(
+  cd "${ASDF_DOWNLOAD_PATH}"
+
+  curl --fail -Lqs "https://download.mono-project.com/archive/${ASDF_INSTALL_VERSION}/macos-10-universal/MonoFramework-MDK-${ASDF_INSTALL_VERSION}.macos10.xamarin.universal.pkg" -omono.pkg
+
+  mkdir -p ./mono
+  xar -xf ./mono.pkg -C ./mono
+  cd ./mono/mono.pkg
+  gunzip -dc Payload | cpio -i
+)

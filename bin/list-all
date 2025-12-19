@@ -2,9 +2,15 @@
 
 set -Eeuo pipefail
 
+sort_versions() {
+  sed 'h; s/[-]/./g; s/\([[:digit:]]\+\)/.\1/g; s/$/.z/; G; s/\n/ /' |
+    LC_ALL=C sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n -k 5,5n |
+    awk '{print $2}'
+}
+
 curl -Lqs https://download.mono-project.com/archive/ |
-  grep -Eo 'href="\d[^"]+"' |
+  grep -Eo 'href="[0-9][^"]+"' |
   cut -d\" -f2 |
-  cut -d\/ -f1 |
-  sort --version-sort --unique |
+  cut -d/ -f1 |
+  sort_versions |
   xargs
